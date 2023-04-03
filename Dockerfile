@@ -7,7 +7,7 @@ RUN apk add --no-cache chromium chromium-chromedriver xvfb-run dumb-init
 WORKDIR /app
 COPY requirements.txt /app/
 
-RUN python -m pip install --no-cache-dir -r requirements-app.txt
+RUN python -m pip install --no-cache-dir -r requirements.txt
 
 COPY scraper.py app.py /app/
 
