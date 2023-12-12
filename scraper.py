@@ -46,10 +46,10 @@ def make_api_url(date: datetime.date) -> str:
 def parse_api_response(driver: webdriver.Chrome) -> typing.Optional[Event]:
     body = driver.find_element(By.TAG_NAME, 'body')
     data = json.loads(body.text)
-    try:
-        event_data = data['schedule']['schedules']['Performance Time']['Evening'][0]
-    except (KeyError, IndexError):
+    schedules = data['schedule']['schedules']
+    if 'No Performance' in schedules:
         return None
+    event_data = schedules['Performance Time']['finder.schedule.showtimes.evening'][0]
 
     date = datetime.datetime.strptime(event_data['date'], '%Y-%m-%d').date()
     time = datetime.datetime.strptime(
