@@ -20,6 +20,8 @@ TIME_FORMAT = '%H:%M:%S'
 DISNEY_WORLD_TIMEZONE_NAME = 'US/Eastern'
 DISNEY_WORLD_TIMEZONE = zoneinfo.ZoneInfo(DISNEY_WORLD_TIMEZONE_NAME)
 
+# The API payload contains a start and end time, but they are always
+# the same, so the duration has to be hard-coded here.
 EVENT_DURATION = datetime.timedelta(minutes=15)
 
 
@@ -49,7 +51,13 @@ def parse_api_response(driver: webdriver.Chrome) -> typing.Optional[Event]:
     schedules = data['schedule']['schedules']
     if 'No Performance' in schedules:
         return None
-    event_data = schedules['Performance Time']['finder.schedule.showtimes.evening'][0]
+    performance_obj = schedules['Performance Time']
+    # Disney's API keeps changing the field name, so just pick whatever single field is there
+    performances = list(performance_obj.values())
+    if len(performances) != 1:
+        raise Error(f'Expected exactly 1 performance object. Got {len(performances)}')
+    performance_group = performances[0]
+    event_data = performance_group[0]
 
     date = datetime.datetime.strptime(event_data['date'], '%Y-%m-%d').date()
     time = datetime.datetime.strptime(
