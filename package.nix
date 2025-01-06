@@ -2,8 +2,9 @@
   lib,
   python3Packages,
 
-  chromium,
+  bash,
   chromedriver,
+  chromium,
   xorg,
 }:
 with python3Packages;
@@ -23,8 +24,12 @@ buildPythonApplication {
   makeWrapperArgs = [
     "--prefix PATH : ${
       lib.makeBinPath [
-        chromium
+        # A shell is used internally by selenium when finding browser/driver paths
+        # TODO: Specify browser paths explicitly to avoid needing this (and also
+        # allow overriding them via the module config?)
+        bash
         chromedriver
+        chromium
         xorg.xvfb
       ]
     }"
