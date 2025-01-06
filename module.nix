@@ -59,7 +59,7 @@ in
 
       serviceConfig = {
         Type = "oneshot";
-        DynmicUser = true;
+        DynamicUser = true;
         UMask = "0077";
         # TODO: Use LoadCredential instead?
         EnvironmentFile = [ cfg.secretsFile ];
