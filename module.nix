@@ -61,7 +61,6 @@ in
         Type = "oneshot";
         DynmicUser = true;
         UMask = "0077";
-        WorkingDirectory = cfg.dataDir;
         # TODO: Use LoadCredential instead?
         EnvironmentFile = [ cfg.secretsFile ];
         ExecStart = "${cfg.package}/bin/disney-fireworks-caldav";
