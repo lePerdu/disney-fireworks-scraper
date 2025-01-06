@@ -6,11 +6,9 @@ import os
 from collections.abc import Iterator
 
 import caldav
-import dotenv
+from xvfbwrapper import Xvfb
 
 from . import scraper
-
-dotenv.load_dotenv()
 
 CALDAV_URL = os.environ.get("CALDAV_URL")
 assert CALDAV_URL is not None
@@ -81,9 +79,10 @@ def whole_week() -> Iterator[datetime.date]:
 
 
 def main():
-    cal = get_client()
-    for event in scraper.get_events_for_days(whole_week()):
-        create_if_missing(cal, event)
+    with Xvfb():
+        cal = get_client()
+        for event in scraper.get_events_for_days(whole_week()):
+            create_if_missing(cal, event)
 
 
 if __name__ == "__main__":

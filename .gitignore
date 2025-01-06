@@ -5,3 +5,5 @@ venv*/
 .env*
 /token.json
 /credentials.json
+
+/result
