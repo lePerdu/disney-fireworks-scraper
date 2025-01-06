@@ -1,2 +1,7 @@
 __pycache__/
-venv/
+*.egg-info/
+venv*/
+
+.env*
+/token.json
+/credentials.json

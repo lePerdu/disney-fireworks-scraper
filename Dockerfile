@@ -9,6 +9,7 @@ COPY requirements.txt /app/
 
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
-COPY scraper.py app.py /app/
+COPY src/* /app/
 
-CMD dumb-init xvfb-run gunicorn --bind :$PORT --workers 1 --threads 8 --timeout 0 app:app
+ENTRYPOINT ["dumb-init", "xvfb-run"]
+CMD ["python", "google_calendar.py"]

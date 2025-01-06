@@ -1,0 +1,8 @@
+services:
+  google_calendar:
+    build:
+      context: .
+      dockerfile: ./Dockerfile.calendar
+    volumes:
+      - ./credentials.json:/app/credentials.json:ro
+      - ./token.json:/app/token.json
