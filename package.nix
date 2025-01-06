@@ -21,6 +21,12 @@ buildPythonApplication {
   ];
 
   makeWrapperArgs = [
-    "--prefix PATH : ${lib.makeBinPath [ chromium chromedriver xorg.xvfb ]}"
+    "--prefix PATH : ${
+      lib.makeBinPath [
+        chromium
+        chromedriver
+        xorg.xvfb
+      ]
+    }"
   ];
 }
