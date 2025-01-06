@@ -12,4 +12,4 @@ RUN python -m pip install --no-cache-dir -r requirements.txt
 COPY src/* /app/
 
 ENTRYPOINT ["dumb-init", "xvfb-run"]
-CMD ["python", "google_calendar.py"]
+CMD ["python", "/app/disney_fireworks_scraper/caldav_calendar.py"]

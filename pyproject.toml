@@ -1,2 +1,20 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "disney_fireworks_scraper"
+version = "0.0.1"
+description = "Tool for scraping Disney World Fireworks showtimes"
+requires-python = ">=3.10"
+dependencies = [
+  "selenium==4.8.3",
+  "caldav==1.4.0",
+  "python-dotenv==1.0.1",
+]
+
+[project.scripts]
+disney-fireworks-caldav = "disney_fireworks_scraper.caldav_calendar:main"
+
 [tool.basedpyright]
 typeCheckingMode = "standard"
