@@ -66,8 +66,6 @@ in
     systemd.services.disney-fireworks-caldav = {
       description = "Oneshot task to sync 1 weeks worth of Disney fireworks events";
       after = [ "network-online.target" ];
-      wants = [ "network-online.target" ];
-      wantedBy = [ "multi-user.target" ];
 
       environment = {
         CHROME_BROWSER_PATH = cfg.chromeBrowserPath;
