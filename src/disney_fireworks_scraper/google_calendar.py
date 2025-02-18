@@ -11,19 +11,15 @@ from . import scraper
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
-CALENDAR_ID = (
-    "da5bef1e62a846bfa5ae217324f3766ca1f4736514e05b6fdbb29dd76919d91c"
-    "@group.calendar.google.com"
-)
-EVENT_NAME = "Magic Kingdom Fireworks"
-EVENT_TIMEZONE = "US/Eastern"
-
-CalendarService = typing.Any
+EVENT_NAME = os.environ.get("CALENDAR_EVENT_NAME", "Magic Kingdom Fireworks")
+EVENT_TIMEZONE = os.environ.get("CALENDAR_EVENT_TIMEZONE", "US/Eastern")
 
 CALENDAR_ID = os.environ.get("CALENDAR_ID")
 assert CALENDAR_ID is not None
 
 CREDENTIALS_FILE = os.environ.get("CREDENTIALS_FILE", "credentials.json")
+
+CalendarService = typing.Any
 
 
 def get_service() -> CalendarService:

@@ -47,6 +47,14 @@ in
         type = types.str;
         description = "Calendar ID to sync with";
       };
+      CALENDAR_EVENT_TIMEZONE = mkOption {
+        type = types.str;
+        description = "Override timezone of the events created";
+      };
+      CALENDAR_EVENT_NAME = mkOption {
+        type = types.str;
+        description = "Set a custom name for the events";
+      };
     };
 
     settingsFile = mkOption {
@@ -72,6 +80,7 @@ in
       environment = {
         CHROME_BROWSER_PATH = cfg.chromeBrowserPath;
         CHROME_DRIVER_PATH = cfg.chromeDriverPath;
+        CREDENTIALS_FILE = cfg.credentialsFile;
       } // cfg.settings;
 
       serviceConfig = {
