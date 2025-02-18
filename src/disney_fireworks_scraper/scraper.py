@@ -1,12 +1,16 @@
 import datetime
 import json
 import logging
+import os
 import zoneinfo
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass
 
-from selenium import webdriver
+from selenium.webdriver.chromium.options import ChromiumOptions
+from selenium.webdriver.chromium.service import ChromiumService
+from selenium.webdriver.chromium.webdriver import ChromiumDriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.remote.webdriver import WebDriver
 
 logging.basicConfig(level=logging.INFO)
 
@@ -30,6 +34,10 @@ DISNEY_WORLD_TIMEZONE = zoneinfo.ZoneInfo(DISNEY_WORLD_TIMEZONE_NAME)
 # the same, so the duration has to be hard-coded here.
 EVENT_DURATION = datetime.timedelta(minutes=15)
 
+# Allow configuring these manually
+BROWSER_PATH = os.environ.get("CHROME_BROWSER_PATH")
+DRIVER_PATH = os.environ.get("CHROME_DRIVER_PATH")
+
 
 @dataclass
 class Event:
@@ -38,21 +46,32 @@ class Event:
     timezone: zoneinfo.ZoneInfo
 
 
-def create_browser() -> webdriver.Chrome:
+def create_browser() -> WebDriver:
     logging.info("Configuring browser instance")
-    options = webdriver.ChromeOptions()
+
+    options = ChromiumOptions()
+    if BROWSER_PATH is not None:
+        options.binary_location = BROWSER_PATH
     options.add_argument("--disable-blink-features=AutomationControlled")
     options.add_argument("--disable-gpu")
     options.add_argument("--disable-dev-shm-usage")
     options.add_argument("--no-sandbox")
-    return webdriver.Chrome(options=options)
+
+    if DRIVER_PATH is not None:
+        # Conditional is needed for type-checking, because the kwarg is not
+        # marked as optional (even though it is valid for it to be None)
+        service = ChromiumService(executable_path=DRIVER_PATH)
+    else:
+        service = ChromiumService()
+
+    return ChromiumDriver(options=options, service=service)
 
 
 def make_api_url(date: datetime.date) -> str:
     return API_BASE_URL + str(date)
 
 
-def parse_api_response(driver: webdriver.Chrome) -> Event | None:
+def parse_api_response(driver: WebDriver) -> Event | None:
     body = driver.find_element(By.TAG_NAME, "body")
     data = json.loads(body.text)
     schedules = data["schedule"]["schedules"]

@@ -12,6 +12,20 @@ in
   options.services.disney-fireworks-caldav = {
     enable = mkEnableOption "Disney fireworks CalDav sync service";
     package = mkPackageOption pkgs "disney-fireworks-scraper" { };
+    chromeBrowserPath = mkOption {
+      type = types.str;
+      description = ''
+        Location of the Chrome/Chromium executable to use.
+      '';
+      default = "${pkgs.chromium}/bin/chromium";
+    };
+    chromeDriverPath = mkOption {
+      type = types.str;
+      description = ''
+        Location of the chromedriver executable to use.
+      '';
+      default = "${pkgs.chromedriver}/bin/chromedriver";
+    };
 
     syncTimer = mkOption {
       type = types.str;
@@ -49,13 +63,16 @@ in
   };
 
   config = mkIf cfg.enable {
-    systemd.services.disney-fireworks-caldav-job = {
-      description = "Cron job to sync 1 weeks worth of Disney fireworks events";
+    systemd.services.disney-fireworks-caldav = {
+      description = "Oneshot task to sync 1 weeks worth of Disney fireworks events";
       after = [ "network-online.target" ];
       wants = [ "network-online.target" ];
       wantedBy = [ "multi-user.target" ];
 
-      environment = cfg.settings;
+      environment = {
+        CHROME_BROWSER_PATH = cfg.chromeBrowserPath;
+        CHROME_DRIVER_PATH = cfg.chromeDriverPath;
+      } // cfg.settings;
 
       serviceConfig = {
         Type = "oneshot";
@@ -68,7 +85,7 @@ in
         # TODO: SystemD hardening
       };
     };
-    systemd.timers.disney-fireworks-caldav-job = {
+    systemd.timers.disney-fireworks-caldav = {
       wantedBy = [ "timers.target" ];
       description = "Run Disney Fireworks CalDav sync regularly";
       timerConfig = {
