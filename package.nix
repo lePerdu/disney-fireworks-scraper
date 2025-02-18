@@ -10,13 +10,14 @@
 with python3Packages;
 buildPythonApplication {
   pname = "disney-fireworks-scraper";
-  version = "0.0.1";
+  version = "0.1.0";
   src = ./.;
 
   format = "pyproject";
   nativeBuildInputs = [ setuptools ];
   dependencies = [
     caldav
+    google-api-python-client
     selenium
     xvfbwrapper
   ];

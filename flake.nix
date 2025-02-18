@@ -23,7 +23,8 @@
         # TODO: Put under `python3Packages`?
         disney-fireworks-scraper = self.packages.${system}.default;
       };
-      nixosModules.caldav = import ./module.nix;
+      nixosModules.caldav = import ./module-caldav.nix;
+      nixosModules.google = import ./module-google.nix;
 
       formatter.${system} = pkgs.nixfmt-rfc-style;
     };
