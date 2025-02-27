@@ -7,7 +7,7 @@ from collections.abc import Iterator
 from googleapiclient.discovery import build, service_account
 from xvfbwrapper import Xvfb
 
-from . import scraper
+from disney_fireworks_scraper import scraper
 
 SCOPES = ["https://www.googleapis.com/auth/calendar"]
 

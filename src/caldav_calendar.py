@@ -8,7 +8,7 @@ from collections.abc import Iterator
 import caldav
 from xvfbwrapper import Xvfb
 
-from . import scraper
+from disney_fireworks_scraper import scraper
 
 CALDAV_URL = os.environ.get("CALDAV_URL")
 assert CALDAV_URL is not None
